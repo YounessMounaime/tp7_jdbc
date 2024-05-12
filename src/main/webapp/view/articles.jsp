@@ -23,22 +23,38 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${articles}" var="article">
-			<tr>
-				<td>${article.id}</td>
-				<td>${article.description}</td>
-				<td>${article.quantite}</td>
-				<td>${article.price}</td>
-				<td>
-					<a href="editArticle.jsp?id=${article.id}">Modifier</a>
+        <c:forEach items="${articles}" var="article">
+            <tr>
+                <td>${article.id}</td>
+                <td>${article.description}</td>
+                <td>${article.quantite}</td>
+                <td>${article.price}</td>
+                <td>
+                    <a href="articles.do?action=edit&id=${article.id}">Modifier</a>
+                    <a href="articles.do?action=delete&id=${article.id}">Supprimer</a>
+                </td>
+            </tr>
+            <c:if test="${param.action == 'edit' && param.id == article.id}">
+                <tr>
+                    <td colspan="4">
+                        <form action="articles.do" method="post">
+                            <input type="hidden" name="id" value="${article.id}">
+                            <label for="description">Description:</label><br>
+                            <input type="text" id="descriptio" name="description" value="${article.description}"><br>
+                            <label for="quantite">Quantité:</label><br>
+                            <input type="text" id="quantit" name="quantite" value="${article.quantite}"><br>
+                            <label for="price">Prix:</label><br>
+                            <input type="text" id="pric" name="price" value="${article.price}"><br>
+                            <input type="submit" value="Modifier">
+                        </form>
+                    </td>
+                </tr>
+            </c:if>
+        </c:forEach>
 
-					<a href="articles.do?action=delete&id=${article.id}">Supprimer</a>
-
-				</td>
-			</tr>
-		</c:forEach>
 		</tbody>
 	</table>
-	<a href="addArticle.jsp">Ajouter un article</a>
-
 </div>
+
+
+

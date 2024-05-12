@@ -60,7 +60,20 @@ public class ArticleDaoImplJPA implements IArticleDao {
 
     @Override
     public void update(Article article) {
-
+        EntityManager session = DatabaseManager.getSessionFactory().createEntityManager();
+        EntityTransaction tx = session.getTransaction();
+        try {
+            tx.begin();
+            session.merge(article);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
     }
 
     @Override

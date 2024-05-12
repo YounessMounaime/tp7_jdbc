@@ -6,8 +6,8 @@
 				role="button" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false"> Gestion des articles </a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="${pageContext.request.contextPath}/articles.do">Consulter</a>
-
+					<a class="dropdown-item" href="${pageContext.request.contextPath}/articles.do">Consulter Article</a>
+					<a class="dropdown-item" href="${pageContext.request.contextPath}/user.do">Consulter User</a>
 				</div>
 
 			</li>

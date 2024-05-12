@@ -18,6 +18,18 @@ public class ArticleServlet extends HttpServlet {
     private ServiceImpl service = new ServiceImpl();
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            String idParam = request.getParameter("id");
+            if (idParam != null) {
+                long id = Long.parseLong(idParam);
+                service.deleteArticle(id);
+                // Rediriger vers une page de confirmation ou de liste d'articles
+                response.sendRedirect(request.getContextPath() + "/articles.do");
+                return;
+            }
+        }
+        // Récupérer la liste des articles après la suppression
         List<Article> articles = service.getAllArticle();
         request.setAttribute("articles", articles);
         request.getRequestDispatcher("/view/welcome.jsp").forward(request, response);
@@ -40,15 +52,23 @@ public class ArticleServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/articles.do");
 
     }
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+
+
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if ("delete".equals(action)) {
-            long articleId = Long.parseLong(request.getParameter("id"));
-            service.deleteArticle(articleId);
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
+        long id = Long.parseLong(request.getParameter("id"));
+        String description = request.getParameter("description");
+        double quantite = Double.parseDouble(request.getParameter("quantite"));
+        double price = Double.parseDouble(request.getParameter("price"));
+        Article updatedArticle = new Article(id, description, quantite, price);
+        service.update(updatedArticle);
+        response.sendRedirect(request.getContextPath() + "/articles.do");
     }
+
+
+
 
 
 }

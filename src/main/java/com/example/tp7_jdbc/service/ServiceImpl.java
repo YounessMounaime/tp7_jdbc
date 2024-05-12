@@ -37,17 +37,10 @@ public class ServiceImpl implements Iservice {
         daoArticle.delete(articleId);
     }
 
-   /* @Override
+    @Override
     public void update(Article article) {
-        Query query = entityManager.createQuery("UPDATE Article a SET a.description = :description, a.quantite = :quantite, a.price = :price WHERE a.id = :id");
-        query.setParameter("description", article.getDescription());
-        query.setParameter("quantite", article.getQuantite());
-        query.setParameter("price", article.getPrice());
-        query.setParameter("id", article.getId());
-        entityManager.getTransaction().begin();
-        query.executeUpdate();
-        entityManager.getTransaction().commit();
-    }*/
+        daoArticle.update(article);
+    }
 
 
 }

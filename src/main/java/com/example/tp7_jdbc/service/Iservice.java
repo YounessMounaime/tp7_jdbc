@@ -9,6 +9,6 @@ public interface Iservice {
     List<Article> getAllArticle();
     void addArticle(Article article);
     public void deleteArticle(long articleId);
-    //void update(Article article);
+    void update(Article article);
 
 }
