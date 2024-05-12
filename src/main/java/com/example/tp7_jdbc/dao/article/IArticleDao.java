@@ -8,4 +8,5 @@ public interface IArticleDao {
     List<Article> findAll();
     void save(Article article);
     void deleteAll();
+    void update(Article article);
 }

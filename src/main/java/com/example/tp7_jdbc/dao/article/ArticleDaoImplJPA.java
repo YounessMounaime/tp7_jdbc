@@ -57,6 +57,12 @@ public class ArticleDaoImplJPA implements IArticleDao {
                 session.close();
         }
     }
+
+    @Override
+    public void update(Article article) {
+
+    }
+
     @Override
     public Article findById(Long id) {
         Article article = null;

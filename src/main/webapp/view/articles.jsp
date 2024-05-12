@@ -2,9 +2,12 @@
 <div class="container">
 	<h1>Ajouter un article</h1>
 	<form action="articles.do" method="post">
-		Description: <input type="text" name="description"><br>
-		Quantité: <input type="text" name="quantite"><br>
-		Prix: <input type="text" name="price"><br>
+		<label for="description">Description:</label><br>
+		<input type="text" id="description" name="description"><br>
+		<label for="quantite">Quantité:</label><br>
+		<input type="text" id="quantite" name="quantite"><br>
+		<label for="price">Prix:</label><br>
+		<input type="text" id="price" name="price"><br>
 		<input type="submit" value="Ajouter">
 	</form>
 
@@ -28,7 +31,9 @@
 				<td>${article.price}</td>
 				<td>
 					<a href="editArticle.jsp?id=${article.id}">Modifier</a>
+
 					<a href="articles.do?action=delete&id=${article.id}">Supprimer</a>
+
 				</td>
 			</tr>
 		</c:forEach>
