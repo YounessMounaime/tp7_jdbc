@@ -16,14 +16,12 @@ import java.util.List;
 public class UserServlet  extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private DaoImplJPA service = new DaoImplJPA ();
+    private DaoImplJPA  service = new DaoImplJPA ();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       List<User> users= service.findAllUsers();
+        List<User> users = service.findAllUsers();
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/view/welcome.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/users.jsp").forward(request, response);
     }
-
-
 }
