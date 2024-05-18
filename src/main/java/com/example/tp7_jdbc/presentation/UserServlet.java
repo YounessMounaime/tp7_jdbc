@@ -24,4 +24,37 @@ public class UserServlet  extends HttpServlet {
         request.setAttribute("users", users);
         request.getRequestDispatcher("/view/users.jsp").forward(request, response);
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if ("add".equals(action)) {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            User newUser = new User(username, password);
+            service.save(newUser);
+        } else if ("updatePassword".equals(action)) {
+            Long userId = Long.parseLong(request.getParameter("id"));
+            String newPassword = request.getParameter("newPassword");
+            service.updatePassword(userId, newPassword);
+        }
+
+        response.sendRedirect(request.getContextPath() + "/user.do");
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,4 +12,9 @@ public interface IDao {
     User getUserByUsername(String username);
     void save(User user);
     void deleteAll();
+
+
+
+    void updatePassword(Long id, String newPassword); // Nouvelle méthode
+
 }

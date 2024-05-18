@@ -16,6 +16,7 @@ import java.util.List;
 public class ArticleServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ServiceImpl service = new ServiceImpl();
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -37,38 +38,24 @@ public class ArticleServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Récupérer les paramètres de la requête pour créer un nouvel article
-        String description = request.getParameter("description");
-        double quantite = Double.parseDouble(request.getParameter("quantite"));
-        double price = Double.parseDouble(request.getParameter("price"));
-
-        // Créer un nouvel objet Article avec les paramètres
-        Article newArticle = new Article(description, quantite, price);
-
-        // Ajouter l'article à la base de données
-        service.addArticle(newArticle);
-
-        // Rediriger vers la page d'accueil après l'ajout
-        response.sendRedirect(request.getContextPath() + "/articles.do");
-
-    }
-
-
-
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        long id = Long.parseLong(request.getParameter("id"));
-        String description = request.getParameter("description");
-        double quantite = Double.parseDouble(request.getParameter("quantite"));
-        double price = Double.parseDouble(request.getParameter("price"));
-        Article updatedArticle = new Article(id, description, quantite, price);
-        service.update(updatedArticle);
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            // Modification de l'article
+            long id = Long.parseLong(idParam);
+            String description = request.getParameter("description");
+            double quantite = Double.parseDouble(request.getParameter("quantite"));
+            double price = Double.parseDouble(request.getParameter("price"));
+            Article updatedArticle = new Article(id, description, quantite, price);
+            service.update(updatedArticle);
+        } else {
+            // Ajout d'un nouvel article
+            String description = request.getParameter("description");
+            double quantite = Double.parseDouble(request.getParameter("quantite"));
+            double price = Double.parseDouble(request.getParameter("price"));
+            Article newArticle = new Article(description, quantite, price);
+            service.addArticle(newArticle);
+        }
+        // Rediriger vers la page d'accueil après l'ajout ou la modification
         response.sendRedirect(request.getContextPath() + "/articles.do");
     }
-
-
-
-
-
 }

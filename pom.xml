@@ -90,6 +90,15 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>de.svenkubiak</groupId>
+            <artifactId>jBCrypt</artifactId>
+
+        </dependency>
+
+
+
+
 
 
 

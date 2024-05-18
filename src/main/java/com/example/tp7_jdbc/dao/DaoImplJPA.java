@@ -46,6 +46,9 @@ public class DaoImplJPA implements IDao {
     @Override
     public void save(User user) {
         try {
+            // Crypter le mot de passe de l'utilisateur
+
+
             session = DatabaseManager.getSessionFactory().createEntityManager();
             EntityTransaction tx=session.getTransaction();
             tx.begin();
@@ -75,6 +78,29 @@ public class DaoImplJPA implements IDao {
                 session.close();
         }
     }
+
+    @Override
+    public void updatePassword(Long id, String newPassword) {
+        try {
+            session = DatabaseManager.getSessionFactory().createEntityManager();
+            EntityTransaction tx = session.getTransaction();
+            tx.begin();
+            User user = session.find(User.class, id);
+            if (user != null) {
+                user.setPassword(newPassword); // Assuming you have a setPassword method in your User class
+                session.merge(user);
+            }
+            tx.commit();
+            session.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null)
+                session.close();
+        }
+    }
+
+
     @Override
     public User findById(Long id) {
         User user = null;
