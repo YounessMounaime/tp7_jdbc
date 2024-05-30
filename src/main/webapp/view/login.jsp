@@ -16,7 +16,7 @@
 			<div class="fadeIn first">
 				<img  src="static/images/login.jpg" id="icon" alt="User Icon" />
 			</div>
-			
+
 			<p>
 				<font color="red">${AccountIncorrect}</font>
 			</p>

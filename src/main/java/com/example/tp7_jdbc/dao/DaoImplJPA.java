@@ -1,20 +1,22 @@
 package com.example.tp7_jdbc.dao;
+
 import com.example.tp7_jdbc.service.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DaoImplJPA implements IDao {
     private EntityManager session = null;
+
     @Override
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
         try {
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            users=session.createQuery("from User").getResultList();
+            users = session.createQuery("from User").getResultList();
             session.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -24,16 +26,17 @@ public class DaoImplJPA implements IDao {
         }
         return users;
     }
+
     @Override
     public User getUserByUsername(String username) {
         User user = null;
         try {
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            Query request=session.createQuery("select u from User u where u.username=:username");
+            Query request = session.createQuery("select u from User u where u.username=:username");
             request.setParameter("username", username);
-            List<User> liste=request.getResultList();
+            List<User> liste = request.getResultList();
             if (liste != null && !liste.isEmpty())
-                user=liste.get(0);
+                user = liste.get(0);
             session.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -43,14 +46,16 @@ public class DaoImplJPA implements IDao {
         }
         return user;
     }
+
     @Override
     public void save(User user) {
         try {
-            // Crypter le mot de passe de l'utilisateur
-
+            // Encrypt the user's password before saving
+            String encryptedPassword = PasswordUtil.encrypt(user.getPassword());
+            user.setPassword(encryptedPassword);
 
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            EntityTransaction tx=session.getTransaction();
+            EntityTransaction tx = session.getTransaction();
             tx.begin();
             session.merge(user);
             tx.commit();
@@ -62,11 +67,12 @@ public class DaoImplJPA implements IDao {
                 session.close();
         }
     }
+
     @Override
     public void deleteAll() {
         try {
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            EntityTransaction tx=session.getTransaction();
+            EntityTransaction tx = session.getTransaction();
             tx.begin();
             session.createQuery("delete from User").executeUpdate();
             tx.commit();
@@ -87,7 +93,9 @@ public class DaoImplJPA implements IDao {
             tx.begin();
             User user = session.find(User.class, id);
             if (user != null) {
-                user.setPassword(newPassword); // Assuming you have a setPassword method in your User class
+                // Encrypt the new password before updating
+                String encryptedPassword = PasswordUtil.encrypt(newPassword);
+                user.setPassword(encryptedPassword);
                 session.merge(user);
             }
             tx.commit();
@@ -100,13 +108,12 @@ public class DaoImplJPA implements IDao {
         }
     }
 
-
     @Override
     public User findById(Long id) {
         User user = null;
         try {
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            user=session.find(User.class,id);
+            user = session.find(User.class, id);
             session.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,15 +123,16 @@ public class DaoImplJPA implements IDao {
         }
         return user;
     }
+
     @Override
     public void delete(Long id) {
         try {
             session = DatabaseManager.getSessionFactory().createEntityManager();
-            EntityTransaction tx=session.getTransaction();
+            EntityTransaction tx = session.getTransaction();
             tx.begin();
-            User userFoud=session.find(User.class,id);
-            if (userFoud != null)
-                session.remove(userFoud);
+            User userFound = session.find(User.class, id);
+            if (userFound != null)
+                session.remove(userFound);
             tx.commit();
             session.close();
         } catch (Exception e) {
